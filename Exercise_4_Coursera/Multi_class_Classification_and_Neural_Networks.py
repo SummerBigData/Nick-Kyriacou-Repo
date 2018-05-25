@@ -81,9 +81,9 @@ for i in range(10): 	#We have 10 different classes
 	for k in range(total):
 		
 		if (yvals[k] == test[i]):
-			solution[i] = 1
+			solution[k] = 1
 		else: 
-			solution[i] = 0 
+			solution[k] = 0 
 						#Individually specifies which index is our "1" (target) and set the rest to "0's" 
 	
 	small = scipy.optimize.minimize(fun=reg_cost,x0=temp_theta,method='CG',jac=reg_grad,args = (l,solution,xvals_intercepts)) #This should find the theta values for each class (0-9) such that our regularized cost function is minimized
@@ -106,19 +106,19 @@ high_value = np.zeros((len(array),1))
 print("we exited the loop")
 print(array.shape)
 for g in range(len(array)):
-	high_value[i,0] = np.argmax(array[i,:])
+	high_value[g,0] = np.argmax(array[g,:])
 
-
+print(high_value)
 #Next we want to test the accuracy of our regression method in being able to identify a number correctly
 correctly_guessing_number = np.zeros((10,1))
 print(high_value.shape)
 for h in range(len(high_value)):
-	if (high_value[i] == yvals[i]): #In this if statement, if we correctly guess the output then we add one to the count of correctly guessed values 
+	if (high_value[h] == yvals[h]): #In this if statement, if we correctly guess the output then we add one to the count of correctly guessed values 
 		print("we got a good value (1st if statement)")
-		correctly_guessing_number[yvals[i]] = correctly_guessing_number[yvals[i]]+1
-	if (high_value[i] == 0 and yvals[i] ==10): #Takes into account the fact that indexing for number 0 started at 10 with Matlab
+		correctly_guessing_number[yvals[h]] = correctly_guessing_number[yvals[h]]+1
+	if (high_value[h] == 0 and yvals[h] ==10): #Takes into account the fact that indexing for number 0 started at 10 with Matlab
 		correctly_guessing_number[0] = correctly_guessing_number[0] + 1
-		print("we got a good value (1st if statement)")
+		print("we got a good value (2nd if statement)")
 scaling_down = (correctly_guessing_number/float(500.0))*100
 print("Percentages each number was guessed correctly")
 print(scaling_down)
