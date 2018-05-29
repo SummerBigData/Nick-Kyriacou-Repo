@@ -130,11 +130,11 @@ a_2 =  sigmoid(Theta_1.T, xvals_intercepts)
 
 
 #Next we need to add the bias layer onto a_2 
-a_2 = np.hstack((x_ones, a_2))
+a_2_bias = np.hstack((x_ones, a_2))
 
 
 #Now let's run the (Theta) values from the second (hidden) layer into our hypothesis function
-output = sigmoid(Theta_2.T, a_2)
+output = sigmoid(Theta_2.T, a_2_bias)
 
 #Repeat the same process as above and find the index of the highest values and then store them in a 5000x1 array
 highest_value_neural_network = np.zeros((total,1))
@@ -156,4 +156,22 @@ for y in range(len(highest_value_neural_network)):
 scaling_down_neural = (correctly_guessing_number_neural)*100.0/float(500)
 print("Percentages each number was guessed correctly using a neural network")
 print(scaling_down_neural)
-	
+
+#Next let us create some pictures of the hidden layer to see patterns 
+#This snippet of code stiches together 10 pictures of each of the first 10 elements stored in each hidden layer 
+for p in range(10):
+	pic0 = np.transpose(np.reshape(a_2[0+500*p],(5,5)))
+	pic1 = np.transpose(np.reshape(a_2[1+500*p],(5,5)))
+	pic2 = np.transpose(np.reshape(a_2[2+500*p],(5,5)))
+	pic3 = np.transpose(np.reshape(a_2[3+500*p],(5,5)))
+	pic4 = np.transpose(np.reshape(a_2[4+500*p],(5,5)))
+	pic5 = np.transpose(np.reshape(a_2[5+500*p],(5,5)))
+	pic6 = np.transpose(np.reshape(a_2[6+500*p],(5,5)))
+	pic7 = np.transpose(np.reshape(a_2[7+500*p],(5,5)))
+	pic8 = np.transpose(np.reshape(a_2[8+500*p],(5,5)))
+	pic9 = np.transpose(np.reshape(a_2[9+500*p],(5,5)))
+	#Now we can combined them all together to be show on a singular panel
+	pic_combined = np.concatenate((pic0,pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9),axis = 1)
+	img_plot = plt.imshow(pic_combined,cmap = 'binary')
+
+	plt.show()
