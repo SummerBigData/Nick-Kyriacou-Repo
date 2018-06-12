@@ -138,8 +138,8 @@ def create_weights_and_bias(): #This function creates all W's and B's and combin
 	bias_2 = np.random.rand(features,1) #64x1 matrix
 	bias_2 = bias_2*2*epsilon - epsilon
 	theta_all = np.concatenate((np.ravel(theta1_random), np.ravel(theta2_random), np.ravel(bias_1),np.ravel(bias_2)))
-	print('in creating weights')
-	print(theta_all.shape)
+	#print('in creating weights')
+	#print(theta_all.shape)
 	return(theta_all)
 	
 def seperate(theta_all): #This function will take a combined theta vector and seperate it into 4 of its specific components
@@ -148,125 +148,166 @@ def seperate(theta_all): #This function will take a combined theta vector and se
 	W_2 = np.reshape(theta_all[features*length_hidden:2*features*length_hidden],(features,length_hidden))
 	B_2 = np.reshape(theta_all[2*features*length_hidden + length_hidden:len(theta_all)],(features,1))
 	#Now that we have seperated each vector and reshaped it into usable format lets return each weight
-	print('in seperate')
-	print(W_1.shape)
-	print(W_2.shape)
-	print(B_1.shape)
-	print(B_2.shape)
+	#print('in seperate')
+	#print(W_1.shape)
+	#print(W_2.shape)
+	#print(B_1.shape)
+	#print(B_2.shape)
 	return(W_1,B_1,W_2,B_2)
 
 
 def feed_forward(theta_all,xvals):
 	#First we must unravel our theta1 and theta2 and reshape them into the correct dimensions
 	W_1,B_1, W_2, B_2 = seperate(theta_all)
-	print('inside feed forward')
-	print(W_1.shape)
-	print(B_1.shape)
-	print(xvals.shape)
+	#print('inside feed forward')
+	#print(W_1.shape)
+	#print(B_1.shape)
+	#print(xvals.shape)
 	a_2 = sigmoid(W_1,B_1,xvals) #Calculates a_2 as a matrix
-	print(a_2.shape)
-	print('that was a_2')
+	a_2 = a_2.T
+	#print(a_2.shape)
+	#print('that was a_2')
 	a_3 = sigmoid(W_2,B_2,a_2)
-	print(a_3.shape)
+	a_3 = a_3.T
+	#print(a_3.shape)
 	#print('did this:feed_forward')
 	return(a_3,a_2)
 
 
 def sigmoid(W,B,inputs): #Add surens fix if there are overflow errors
 	z = np.matmul(W, inputs.T) + B #Should be a 25x10000 matrix
-	print('in sigmoid')
-	print(z.shape)
+	#print('in sigmoid')
+	#print(z.shape)
 	hypo = 1.0/(1.0 + np.exp(-1.0*z))
 	return(hypo)
 
-def sparse_cost_function(theta_all,inputs):
-	W_1,B_1, W_2, B_2 = seperate(theta_all)
-	print('in cost function')
-	print(W_1.shape)
-	print(W_2.shape)
-	print(B_1.shape)
-	print(B_2.shape)
-	#First forward propogate
-	a_3,a_2 = feed_forward(theta_all,inputs)
-	#Now find sum of squared difference of inputs  - outputs
-	diff = inputs - a_3
-	print(diff.shape)
-	sum_diff_squared = ( 1/(2*float(training_sets)) ) * np.sum(np.multiply(diff,diff))
-	print(sum_diff_squared)
-	J = ( 0.5*float(l) ) * ( np.sum(np.multiply(W_1,W_1)) + np.sum(np.multiply(W_2,W_2)) )
-	print(J)
-	J = J + sum_diff_squared
-	#Next we need to calculate the sparsity parameter
-	p_hat = (1.0/float(len(inputs)))* np.sum(a_2,axis = 0)
-	print(p_hat)
-	J = J/float(len(inputs)) + Beta * np.sum( P*np.log(P/p_hat) + (1.0 - P)*(np.log((1.0 - P)/(1.0 - p_hat)) ) ) 
-	return(J)
-
-def back_prop(theta_all,inputs):
-	print('Im in backprop')
-	W_1,B_1, W_2, B_2 = seperate(theta_all)
-	#First Forward Propogate
+# Calculate the regularized Cost J(theta)
+def sparse_cost_function(theta_all, inputs):
+	# Forward Propagates to output layer
 	a_3, a_2 = feed_forward(theta_all, inputs)
-	print('a_2 looks like', a_2.shape)
-	p_hat = (1.0/float(len(inputs)))* np.sum(a_2,axis = 0)
-	K_L =  Beta*(-1.0*(P/p_hat) + (1.0 - P)/(1.0 - p_hat))
-	K_L = K_L.reshape(1,length_hidden)
-	#Now let's find errors in each layer including sparsity contribution to Delta2
-	Delta3 = np.multiply( (a_3 - inputs),a_3*(1.0-a_3) )
-	Delta2 = np.multiply( np.dot(Delta3.T,W_2.T) + K_L, a_2*(1.0-a_2) )
+	# Seperate and reshape the Theta values
+	W_1, B_1, W_2, B_2 = seperate(theta_all)
+	# Calculate Sparsity contribution. Hehe, phat sounds like fat (stands for p hat)
+	p_hat = (1.0 / 10000.0)*np.sum(a_2, axis=0) # 25 len vector
+	diff = a_3 - inputs
+	# Calculate J(W, b)
+	Cost_first = (0.5/10000.0)*np.sum((diff)**2)
+	Cost_second = Cost_first + (0.5/10000.0)*l * (np.sum(W_1**2)+np.sum(W_2**2))
+	Cost_third = Cost_second + Beta * np.sum(   P*np.log(P / p_hat) + (1-P)*np.log((1-P)/(1-p_hat))  )
+	return Cost_third
 
-	#Next we must compute the partial derivatives
-	grad_W1 = np.dot(Delta2,inputs.T)
-	grad_W2 = np.dot(Delta3,a_2.T)
-	grad_B1 = np.sum(Delta2,axis=1)/float(len(inputs))
-	grad_B2 = np.sum(Delta3,axis=1)/float(len(inputs))
+# Calculate the gradient of cost function for all values of W1, W2, b1, and b2
+def back_prop(theta_all, inputs):
+	# Seperate and reshape the W and b values
+	W_1, B_1, W_2, B_2 = seperate(theta_all)
+	# Forward Propagate
+	a_3, a_2 = feed_forward(theta_all, inputs)	# a2 (g.m x 25), a3 (g.m x 64)
+	# Creating (Capital) Delta matrices
+	DeltaW1 = np.zeros(W_1.shape)			# (g.f2, g.f1)
+	DeltaW2 = np.zeros(W_2.shape)			# (g.f1, g.f2)
+	Deltab1 = np.zeros(B_1.shape)			# (g.f2, 1)
+	Deltab2 = np.zeros(B_2.shape)			# (g.f1, 1)
+	# Calculate (Lowercase) deltas for each element in the dataset and add it's contributions to the Deltas
+
+	delta3 = np.multiply( -1*(inputs- a_3), a_3*(1-a_3) )
+	# Calculate Sparsity contribution to delta2
+	p_hat = (1.0 / 10000.0)*np.sum(a_2, axis=0)
+	K_L = Beta * ( -P/p_hat + (1-P)/(1-p_hat)	)
+	delta2 = np.multiply( np.matmul(delta3, W_2) + K_L.reshape(1, length_hidden), a_2*(1-a_2) )
+
+	#Initializes the Gradient for each vector
+	Grad_W_1 = np.dot(delta2.T, inputs) 	# (25, 64)
+	Grad_W_2 = np.dot(delta3.T, a_2)     	# (64, 25)
+	Grad_B_1 = np.mean(delta2, axis = 0) # (25,) vector
+	Grad_B_2 = np.mean(delta3, axis = 0) # (64,) vector
+	#Now let's calculate the grad for our W_1 and W_2
+	Grad_W_1 = (1.0/10000.0)*(Grad_W_1+ l*W_1)
+	Grad_W_2 = (1.0/10000.0)*(Grad_W_2 + l*W_2)
+	Combined_Grad = np.concatenate((np.ravel(Grad_W_1),np.ravel(Grad_W_2),np.ravel(Grad_B_1),np.ravel(Grad_B_2)))
+	return ( Combined_Grad )
 
 
-	#Now adding in regularization component
-	grad_W1 = (grad_W1 + l*W_1)/float(len(inputs)) 
-	grad_W2 = (grad_W2 + l*W_2)/float(len(inputs)) 
-	Combined_Grad = np.concatenate(np.ravel(grad_W1),np.ravel(grad_W2),np.ravel(grad_B1),np.ravel(grad_B2))
-	print('in backprop')
-	print(combined_Grad.shape)
-	return(combined_Grad)
 
+#The data starts out on the range of values from -1 to 1 and thus it is important to normalize them such that they all fall between 0 and 1 because these are the valles our sigmoid takes in. 
+def Norm(mat):
+	Min = np.amin(mat)
+	Max = np.amax(mat)
+	nMin = 0
+	nMax = 1
+	normed = ((mat - Min) / (Max - Min)) * (nMax - nMin) + nMin
+	return(normed)
 
 #MAIN SECTION OF CODE STARTS HERE
 
 
-l = 1 #Lambda constant 
+l = 10 #Lambda constant 
 length_hidden = 25 #Length of hidden layer (without bias added)
 epsilon = .12 #Used in gradient check function
-training_sets = 10000 #10000 samples
+training_sets = 100 #10000 samples
 features = 64 #64 features comes from 8x8 hidden layer
-Beta = 0 #Weight of Sparsity Parameter
-P = 0.05 #Sparsity Parameter
+Beta = float(1) #Weight of Sparsity Parameter
+P = float(0.05) #Sparsity Parameter
 
 
 #For a sparse auto encoder our x = y
-data = np.genfromtxt('output_folder/10000Random8x8.out')
-print(data.shape)
-#Now we need to reshape the data into a 64x10000 matrix
-data = np.reshape(data,(64,10000))
-print(data.shape)
-y_vals = data #outputs = inputs
-y_vals = y_vals.T
-print('yvals looks like' , y_vals.shape)
+data = np.genfromtxt('output_folder/10000Random8x8.out',dtype = float)
 
-#Now let's grab our weights and bias terms
+# Roll up data into matrix. The Normalization restricts each value to be [0,1], because we are using the sigmoid hypothesis function
+data = np.asarray(data.reshape(10000,64))
+data = data[0:10000, :]
+# Normalize each image
+for i in range(10000):
+	data[i] = Norm(data[i])
+
+# Prepare the W matrices and B matrices by randomly assinging them values between [-epsilon,epsilon] and linearize them
 theta_all = create_weights_and_bias()
 W_1,B_1, W_2, B_2 = seperate(theta_all)
 
-print( ' looking at backprop')
-print(back_prop(theta_all,y_vals))
 
-cost = sparse_cost_function(theta_all,y_vals)
-print('original cost is ' + str(cost) )
+# CALCULATING IDEAL W MATRICES
+# Check the cost of the initial W matrices
+print 'Initial W JCost: ', sparse_cost_function(theta_all, data) 
 
-print(theta_all.shape)
-#Now let's minimize our cost function
+# Check the gradient. Go up and uncomment the import check_grad to use. ~1.0574852249e-05 for randomized Ws and bs
+#print('gradient is')
+#print scipy.optimize.check_grad(sparse_cost_function, back_prop, theta_all, data)
+
+#Next let us optimize the cost function!!
 print('Lambda is ', l)
 print('now we are optimizing the cost function')
-optimize_time = scipy.optimize.minimize(fun = sparse_cost_function,x0 = theta_all,method = 'CG',tol = 1e-4,jac = back_prop,args = (y_vals))
+optimize_time = scipy.optimize.minimize(fun = sparse_cost_function,x0 = theta_all,method = 'CG',tol = 1e-4,jac = back_prop,args = (data,))
+print('optimal cost function is')
 optimal_thetas = optimize_time.x
-optimal_thetas_cost = sparse_cost_function(optimal_thetas,y_vals)
+optimal_thetas_cost = sparse_cost_function(optimal_thetas,data)
+print(optimal_thetas_cost)
+
+
+# Save our theta weights array to an output file to be used later
+optimal_thetas  = np.ravel(optimal_thetas)
+
+name = 'output_folder/optimalweights_l' + str(l) +'_Beta' + str(Beta) + '_Rho'+ str(P) +'.out'
+np.savetxt(name, optimal_thetas, delimiter = ',')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################OLD STORED CODE##########################################
+
+
