@@ -240,13 +240,13 @@ def Norm(mat):
 #MAIN SECTION OF CODE STARTS HERE
 
 
-l = 10 #Lambda constant 
+l = 1 #Lambda constant 
 length_hidden = 25 #Length of hidden layer (without bias added)
 epsilon = .12 #Used in gradient check function
 training_sets = 100 #10000 samples
 features = 64 #64 features comes from 8x8 hidden layer
 Beta = float(1) #Weight of Sparsity Parameter
-P = float(0.05) #Sparsity Parameter
+P = float(0.01) #Sparsity Parameter
 
 
 #For a sparse auto encoder our x = y
@@ -309,5 +309,70 @@ np.savetxt(name, optimal_thetas, delimiter = ',')
 
 
 ###################################OLD STORED CODE##########################################
+
+
+
+
+
+
+#First let us calculate the optimal a_2 and a_3 values
+#Ultimately we want to display the input and hidden layer that gives us the maximum output layer
+a_3_best, a_2_best = feed_forward(optimal_thetas,data)
+
+
+
+# SHOW IMAGES
+hspaceAll = np.asarray([ [0 for i in range(53)] for j in range(5)])
+picAll = hspaceAll
+
+for i in range(10):
+	# Store the pictures
+	picA1 = np.reshape(np.ravel(data[i*100]), (8,8))
+	picA2 = np.reshape(np.ravel(a_2_best[i*100]), (5,5))
+	picA3 = np.reshape(np.ravel(a_3_best[i*100]), (8,8))
+	# DISPLAY PICTURES
+	# To display a2 in revprop, a1, and a2 in forward prop, we design some spaces
+	hspace = np.asarray([ [0 for i in range(8)] for j in range(8)])
+	vspace1 = np.asarray([ [0 for i in range(5)] for j in range(1)])
+	vspace2 = np.asarray([ [0 for i in range(5)] for j in range(2)])
+
+	# We stitch the vertical spaces onto the pictures
+	picA2All = np.concatenate((vspace1, picA2, vspace2), axis = 0)
+	# We stitch the horizontal pictures together
+	picAlli = np.concatenate((hspace, picA1, hspace, picA2All, hspace, picA3, hspace), axis = 1)
+	# Finally, add this to the picAll
+	picAll = np.vstack((picAll, picAlli, hspaceAll))
+
+# Display the pictures
+imgplot = plt.imshow(picAll, cmap="binary", interpolation='none') 
+plt.savefig('Picture_Folder/'+'something_picture'+'Lamb_'+str(l)+'_Beta_'+str(Beta) +'_Rho_'+str(P) +'.png',transparent=False, format='png')
+plt.show()
+
+
+
+# We also want a picture of the activations for each node in the hidden layer
+W_1, B_1, W_2, B_2 = seperate(optimal_thetas)
+W1Len = np.sum(W_1**2)**(-0.5)
+X = W_1 / W1Len			# (25 x 64)
+X = Norm(X)
+
+picX = np.zeros((25,8,8))
+for i in range(25):
+	picX[i] = np.reshape(np.ravel(X[i]), (8,8))
+
+hblack = np.asarray([ [1 for i in range(52)] for j in range(2)])
+vblack = np.asarray([ [1 for i in range(2)] for j in range(8)])
+
+picAll = hblack
+for i in range(5):
+	pici = np.concatenate((vblack, picX[5*i+0], vblack, picX[5*i+1], vblack, picX[5*i+2], vblack, picX[5*i+3], vblack, picX[5*i+4], vblack), axis = 1)
+	picAll = np.vstack((picAll, pici, hblack))
+
+# Display the pictures
+imgplot = plt.imshow(picAll, cmap="binary", interpolation='none') 
+plt.savefig('Picture_Folder/'+'activations_for_node_hidden_layer'+'Lamb_'+str(l)+'_Beta_'+str(Beta) +'_Rho_'+str(P) +'.png',transparent=False, format='png')
+plt.show()
+
+
 
 
