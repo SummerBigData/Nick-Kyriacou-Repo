@@ -1,0 +1,134 @@
+[[4932.]
+ [5678.]
+ [4968.]
+ [5101.]
+ [4859.]
+ [4506.]
+ [4951.]
+ [5175.]
+ [4842.]
+ [4988.]]
+(50000, 784)
+(50000, 1)
+(50000, 785)
+Shapes of thetas
+(25, 785)
+(10, 26)
+(19885,)
+(50000, 10)
+[[0. 0. 0. ... 0. 0. 0.]
+ [1. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 1. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 1. 0.]]
+(10000, 1)
+(10000, 784)
+('Lambda is ', 1000)
+now we are optimizing the cost function
+('Lowest cost function for lambda value of ', 1000, 'is ', '2.2821020243213175', 'training size was ', 50000)
+Percentages each number was guessed correctly using a neural network
+(10, 1)
+[[97.34693878]
+ [98.14977974]
+ [81.78294574]
+ [86.63366337]
+ [91.03869654]
+ [69.39461883]
+ [92.48434238]
+ [89.10505837]
+ [78.64476386]
+ [79.2864222 ]]
+[0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+(10,)
+('Lambda is ', 10)
+now we are optimizing the cost function
+('Lowest cost function for lambda value of ', 10, 'is ', '0.37943221824483964', 'training size was ', 50000)
+Percentages each number was guessed correctly using a neural network
+(10, 1)
+[[98.57142857]
+ [98.50220264]
+ [96.22093023]
+ [96.63366337]
+ [96.7413442 ]
+ [94.17040359]
+ [96.86847599]
+ [95.81712062]
+ [95.99589322]
+ [94.84638256]]
+[0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+(10,)
+('Lambda is ', 1)
+now we are optimizing the cost function
+('Lowest cost function for lambda value of ', 1, 'is ', '0.15418377182493626', 'training size was ', 50000)
+Percentages each number was guessed correctly using a neural network
+(10, 1)
+[[98.16326531]
+ [98.94273128]
+ [95.83333333]
+ [95.74257426]
+ [96.33401222]
+ [94.17040359]
+ [96.76409186]
+ [95.13618677]
+ [94.66119097]
+ [94.15262636]]
+[0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+(10,)
+('Lambda is ', 0.1)
+now we are optimizing the cost function
+MNIST_Data_Set.py:123: RuntimeWarning: divide by zero encountered in log
+  second = np.multiply((1.0 - outputs), np.log(1 - hypothesis))
+MNIST_Data_Set.py:123: RuntimeWarning: invalid value encountered in multiply
+  second = np.multiply((1.0 - outputs), np.log(1 - hypothesis))
+MNIST_Data_Set.py:126: RuntimeWarning: divide by zero encountered in log
+  J = (1.0/float(training_sets))*np.sum(   -1*np.multiply(outputs, np.log(hypothesis)) - np.multiply(1-outputs, np.log(1 - hypothesis)	) )
+MNIST_Data_Set.py:126: RuntimeWarning: invalid value encountered in multiply
+  J = (1.0/float(training_sets))*np.sum(   -1*np.multiply(outputs, np.log(hypothesis)) - np.multiply(1-outputs, np.log(1 - hypothesis)	) )
+('Lowest cost function for lambda value of ', 0.1, 'is ', '0.08700425725771188', 'training size was ', 50000)
+Percentages each number was guessed correctly using a neural network
+(10, 1)
+[[97.95918367]
+ [98.94273128]
+ [95.15503876]
+ [93.46534653]
+ [94.90835031]
+ [91.59192825]
+ [96.24217119]
+ [94.45525292]
+ [92.09445585]
+ [91.67492567]]
+[0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+(10,)
+('Lambda is ', 0.01)
+now we are optimizing the cost function
+('Lowest cost function for lambda value of ', 0.01, 'is ', 'nan', 'training size was ', 50000)
+Percentages each number was guessed correctly using a neural network
+(10, 1)
+[[97.65306122]
+ [98.41409692]
+ [95.54263566]
+ [94.25742574]
+ [95.31568228]
+ [91.70403587]
+ [95.72025052]
+ [94.55252918]
+ [91.68377823]
+ [92.96333003]]
+[0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+(10,)
+testing
+(1,)
+[97.65306122]
+[[97.65306122]
+ [98.41409692]
+ [95.54263566]
+ [94.25742574]
+ [95.31568228]
+ [91.70403587]
+ [95.72025052]
+ [94.55252918]
+ [91.68377823]
+ [92.96333003]]
+(10, 1)

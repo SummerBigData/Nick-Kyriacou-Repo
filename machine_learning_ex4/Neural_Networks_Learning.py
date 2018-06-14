@@ -7,6 +7,7 @@ from matplotlib import cm
 import math
 import scipy.io
 import matplotlib.image as mpimg
+
 from scipy.optimize import minimize 
 #First let's define a set of global variables
 global training_sets #5000 training samples
@@ -15,8 +16,9 @@ global l #Lambda constant
 global num_classes #Ten total classes
 global iterations #Counts number of iterations for any specific process
 global length_hidden #Length of hidden layer (without bias added)
-global epsilon #Used in gradient check function
+global epsilon #Used to size parameters of randomly generated thetas
 #The following will be all the definitions of the functions for this script
+
 
 def sigmoid(z):
 	sigmoid = 1.0/(1.0+np.exp(-1.0*z))
@@ -198,7 +200,7 @@ features = len(xvals.T) #400 features per sample (excluding x-int bias we add)
 l = 1 #Lambda constant 
 num_classes = 10
 length_hidden = 25
-epsilon = .001
+epsilon = .12
 
 x_ones = np.ones((len(xvals),1))
 xvals_ones = np.hstack((x_ones,xvals))
@@ -220,8 +222,9 @@ print(y_mat)
 
 #print(grad_sigmoid(0))
 #WAS JUST PLAYING WITH MAKING RANDOM VALUES FOR MY THETA, NOT IMPORTANT
-theta_random_1 = np.random.rand(len(theta_1),features+1) 
-theta_random_2 = np.random.rand(len(theta_2.T),10)
+print('length of theta_1 and theta_2', len(theta_1), len(theta_2.T))
+theta_random_1 = np.random.rand(len(theta_1),features+1)*2*epsilon  - epsilon
+theta_random_2 = np.random.rand(len(theta_2.T),10)*2*epsilon - epsilon
 theta_random_1 = (theta_random_1)
 theta_random_2 = (theta_random_2).T
 #For some reason creating random theta matrices gives me a much higher cost so I don't want to look too heavily in that
@@ -234,11 +237,11 @@ theta_random_unrolled = np.concatenate((np.ravel(theta_random_1),np.ravel(theta_
 
 
 #Now let's go into backpropagation
-#back_prop(theta_unrolled,xvals_ones,y_mat)
+back_prop(theta_random_unrolled,xvals_ones,y_mat)
 #Now let's check our gradient
 #print(scipy.optimize.check_grad(cost_function_reg,back_prop,theta_random_unrolled,xvals_ones,y_mat))
 #Next let's find the theta values that give us the optimized cost function
-optimize_time = scipy.optimize.minimize(fun = cost_function_reg,x0 = theta_unrolled,method = 'CG',tol = 1e-4,jac = back_prop,args = (xvals_ones,y_mat))
+optimize_time = scipy.optimize.minimize(fun = cost_function_reg,x0 = theta_random_unrolled,method = 'CG',tol = 1e-4,jac = back_prop,args = (xvals_ones,y_mat))
 best_thetas = optimize_time.x
 #Now let's plug these into the cost function to see what our lowest value of the cost function is
 best_thetas_cost = cost_function_reg(best_thetas,xvals_ones,y_mat)
