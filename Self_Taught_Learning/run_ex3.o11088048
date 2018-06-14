@@ -1,0 +1,17 @@
+/var/spool/batch/torque/mom_priv/jobs/11088048.oak-batch.osc.edu.SC: line 24: [: missing `]'
+/users/PAS1383/osu10172/Nick-Kyriacou-Repo/Self_Taught_Learning
+
+-----------------------
+Resources requested:
+nodes=1:ppn=1
+mem=16gb
+-----------------------
+Resources used:
+cput=00:05:45
+walltime=00:05:52
+mem=1.497 GB
+vmem=2.105 GB
+-----------------------
+Resource units charged (estimate):
+0.039 RUs
+-----------------------

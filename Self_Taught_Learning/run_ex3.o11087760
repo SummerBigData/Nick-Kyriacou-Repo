@@ -1,0 +1,17 @@
+/var/spool/batch/torque/mom_priv/jobs/11087760.oak-batch.osc.edu.SC: line 24: [: missing `]'
+/users/PAS1383/osu10172/Nick-Kyriacou-Repo/Self_Taught_Learning
+=>> PBS: job killed: walltime 28802 exceeded limit 28800
+
+-----------------------
+Resources requested:
+nodes=1:ppn=1
+mem=16gb
+-----------------------
+Resources used:
+cput=07:59:41
+walltime=08:00:02
+mem=1.555 GB
+vmem=2.114 GB
+-----------------------
+Resource units charged (estimate):
+-----------------------
