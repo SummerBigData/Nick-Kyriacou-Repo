@@ -141,7 +141,7 @@ def sigmoid(W,B,inputs): #Add surens fix if there are overflow errors
 training_sets = 60000
 features  = 784
 length_hidden = 200
-l = 0.01
+l = 10
 Beta = 1.0
 P = 0.05
 file_name = 'output_folder/optimalweights_lambda_' + str(l) + '_Beta_' + str(Beta) + '_Rho_' + str(P) + '.out' #This is the name of the file where we pull our theta weights from
@@ -204,5 +204,5 @@ for i in range(14):
 	Combined_panel = np.vstack((Combined_panel,row,black_space_horizontal))
 
 imgplot = plt.imshow(Combined_panel, cmap="binary", interpolation='none') 
-#plt.savefig('Picture_Folder/'+'activations_for_node_hidden_layer'+'Lamb_'+str(l)+'_Beta_'+str(Beta) +'_Rho_'+str(P) +'.png',transparent=False, format='png')
+plt.savefig('Picture_Folder/Visualizing_Activations_for_hidden_layer_node_Lamb_'+str(l)+'_Beta_'+str(Beta) +'_Rho_'+str(P) +'.png',transparent=False, format='png')
 plt.show()

@@ -140,11 +140,9 @@ def feed_forward(theta_all,xvals):
 	#print(B_1.shape)
 	#print(xvals.shape)
 	a_2 = sigmoid(W_1,B_1,xvals) #Calculates a_2 as a matrix
-	a_2 = a_2.T
 	#print(a_2.shape)
 	#print('that was a_2')
 	a_3 = sigmoid(W_2,B_2,a_2)
-	a_3 = a_3.T
 	#print(a_3.shape)
 	#print('did this:feed_forward')
 	return(a_3,a_2)
@@ -155,6 +153,7 @@ def sigmoid(W,B,inputs): #Add surens fix if there are overflow errors
 	#print('in sigmoid')
 	#print(z.shape)
 	hypo = 1.0/(1.0 + np.exp(-1.0*z))
+	hypo = hypo.T
 	return(hypo)
 
 # Calculate the regularized Cost J(theta)
@@ -164,11 +163,11 @@ def sparse_cost_function(theta_all, inputs):
 	# Seperate and reshape the Theta values
 	W_1, B_1, W_2, B_2 = seperate(theta_all)
 	# Calculate Sparsity contribution. Hehe, phat sounds like fat (stands for p hat)
-	p_hat = (1.0 / float(len(inputs)))*np.sum(a_2, axis=0) # 200 len vector
+	p_hat = (1.0 / float(len(inputs)))*np.sum(a_2, axis=0) # 25 len vector
 	diff = a_3 - inputs
 	# Calculate Cost as a function of W,B, lambda, and Beta
 	Cost_first = (0.5/float(len(inputs)))*np.sum((diff)**2)
-	Cost_second = Cost_first + (0.5/float(len(inputs)))*l * (np.sum(W_1**2)+np.sum(W_2**2))
+	Cost_second = Cost_first + (0.5/float(len(inputs)))*l * (  np.sum(W_1**2)+np.sum(W_2**2)  )
 	#print('phat is', p_hat)
 	#print(np.log(P / p_hat) ) This part ends up being ok
 	#print(np.log((1-P)/(1-p_hat)) )
@@ -188,29 +187,33 @@ def back_prop(theta_all, inputs):
 	# Seperate and reshape the W and b values
 	W_1, B_1, W_2, B_2 = seperate(theta_all)
 	# Forward Propagate
-	a_3, a_2 = feed_forward(theta_all, inputs)	# a2 (g.m x 25), a3 (g.m x 64)
+	a_3, a_2 = feed_forward(theta_all, inputs)	# a2 (training_size x length_hidden), a3 (training_size x features)
 	# Creating (Capital) Delta matrices
-	DeltaW1 = np.zeros(W_1.shape)			# (g.f2, g.f1)
-	DeltaW2 = np.zeros(W_2.shape)			# (g.f1, g.f2)
-	Deltab1 = np.zeros(B_1.shape)			# (g.f2, 1)
-	Deltab2 = np.zeros(B_2.shape)			# (g.f1, 1)
-	# Calculate error term for each element in the dataset and add it's contributions to the capital Delta terms
-
+	DeltaW1 = np.zeros(W_1.shape)			# (length_hidden, features)
+	DeltaW2 = np.zeros(W_2.shape)			# (features, length_hidden)
+	Deltab1 = np.zeros(B_1.shape)			# (length_hidden, 1)
+	Deltab2 = np.zeros(B_2.shape)			# (features, 1)
 	
-	# Calculate Sparsity contribution to delta2
+	# Calculate Sparsity contribution to delta_2
 	p_hat = (1.0 / float(len(inputs)))*np.sum(a_2, axis=0)
 	K_L = Beta * ( -P/p_hat + (1-P)/(1-p_hat)	)
-	delta3 = np.multiply( -1*(inputs- a_3), a_3*(1-a_3) )
-	delta2 = np.multiply( np.matmul(delta3, W_2) + K_L.reshape(1, length_hidden), a_2*(1-a_2) )
+
+	# Calculate error term for each element in the dataset and add it's contributions to the capital Delta terms
+
+	delta_3 = np.multiply( -1*(inputs- a_3), a_3*(1-a_3) )
+	delta_2 = np.multiply( np.matmul(delta_3, W_2) + K_L.reshape(1, length_hidden), a_2*(1-a_2) )
 
 	#Initializes the Gradient for each vector
-	Grad_W_1 = np.dot(delta2.T, inputs) 	# (25, 64)
-	Grad_W_2 = np.dot(delta3.T, a_2)     	# (64, 25)
-	Grad_B_1 = np.mean(delta2, axis = 0) # (25,) vector
-	Grad_B_2 = np.mean(delta3, axis = 0) # (64,) vector
+	Grad_W_1 = np.dot(delta_2.T, inputs) 	# DIMENSIONS OF (length_hidden, features)
+	Grad_W_2 = np.dot(delta_3.T, a_2)     	# DIMENSIONS OF  (features, length_hidden)
+	Grad_B_1 = np.mean(delta_2, axis = 0) # DIMENSIONS OF (length_hidden,) 
+	Grad_B_2 = np.mean(delta_3, axis = 0) # DIMENSIONS OF (features,) 
+
 	#Now let's calculate the grad for our W_1 and W_2
 	Grad_W_1 = (1.0/float(len(inputs)))*(Grad_W_1+ l*W_1)
 	Grad_W_2 = (1.0/float(len(inputs)))*(Grad_W_2 + l*W_2)
+
+	#Next we roll these up and package them into a long list
 	Combined_Grad = np.concatenate((np.ravel(Grad_W_1),np.ravel(Grad_W_2),np.ravel(Grad_B_1),np.ravel(Grad_B_2)))
 	return ( Combined_Grad )
 
@@ -220,14 +223,14 @@ def back_prop(theta_all, inputs):
 
 training_sets = 60000 #60000 training samples
 features = 784 #784 features per sample (excluding x-int bias we add) because we have set of 28x28 pixellated images
-l = .005 #Lambda constant
+l = 0.1 #Lambda constant
 num_classes = 10 #There are 10 different possible classifications, This should and will change based on 
 length_hidden = 200
-Beta = 3
-P = 0.1
+Beta = 0.003
+P = 0.05
 test_set_size = 10000 #test set has 10000 entries
-epsilon = .1
-output_name = 'output_folder/optimalweights_lambda_' + str(l) + '_Beta_' + str(Beta) + '_Rho_' + str(P) + '.out'
+epsilon = .12
+output_name = 'output_folder/optimalweights_lambda_' + str(l) + '_Beta_' + str(Beta) + '_Rho_' + str(P) +'.out'
 
 #Next Let's call the function prep_data to get three data sets
 
@@ -254,11 +257,18 @@ print(theta_all.shape)
 ###Something to think about later on. Whether or not I have to normalize my data...
 print(784*200)
 print(theta_all[0:784*200].shape)
+training_data = training_data_5_9[:29404,:]
 #First let's see what the initial cost is
 print('initial cost is')
 print(sparse_cost_function(theta_all,training_data_5_9))
 #Initial cost function turns out to be quite high (~200), now let's check the gradient
-#print(scipy.optimize.check_grad(sparse_cost_function,back_prop,theta_all,training_data_5_9))
+
+#let's take a sample of the data
+sample = training_data_5_9[0:500,:]
+print(sample.shape)
+
+#print('checking_grad')
+#print(scipy.optimize.check_grad(sparse_cost_function,back_prop,theta_all,sample))
 #Grad gives a small value ~ <1e^-4 so we can ignore this for now
 
 

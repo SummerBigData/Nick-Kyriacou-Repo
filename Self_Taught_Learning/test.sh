@@ -1,5 +1,5 @@
 #PBS -N run_ex3
-#PBS -l walltime=480:00
+#PBS -l walltime=600:00
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=16GB
 #PBS -j oe
@@ -17,5 +17,5 @@ fi
 module load python/2.7.8
 #
 # This is the command line that runs the python script
-python -u Self-Taught-Learning-Algorithm.py >& output.log
+python -u Self-Taught-Learning-Algorithm.py >& minimizing_cost_function.log
 
