@@ -1,0 +1,439 @@
+(154192,)
+(400, 192)
+(400, 1)
+(192, 400)
+(192, 1)
+(19200000,)
+(100000, 192)
+Initial cost Function
+1136.1140273444068
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 20)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 40)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 60)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 80)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 100)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 120)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 140)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 160)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 180)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+('Iteration Number ', 200)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+in back_prop
+(400,)
+Optimal Cost function is
+3.88553284319993
