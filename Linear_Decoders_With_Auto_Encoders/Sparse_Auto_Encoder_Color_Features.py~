@@ -135,7 +135,11 @@ def back_prop(theta_all, inputs,outputs): #This back-propagation function calcul
 
 
 	return ( Combined_Grad )
+<<<<<<< HEAD
 ############################ INITIALIZING CONSTANTS AND PREPARING DATA #################
+=======
+############################ INITIALIZING CONSTANTS AND PREPARING DATA #################3
+>>>>>>> 3ce7086aaa62e17b27917a9e3326d14864e43dd0
 training_size = 100000 #FIX ME
 global_iterations = 0 #Number of global iterations in our back_prop and cost function
 features = 192 #This number comes from the fact that we have 8x8x3 pixels (RBG)
