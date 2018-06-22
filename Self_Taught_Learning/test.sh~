@@ -17,5 +17,5 @@ fi
 module load python/2.7.8
 #
 # This is the command line that runs the python script
-python -u Self-Taught-Learning-Algorithm.py >& minimizing_cost_function.log
+python -u Self-Taught-Learning-Algorithm.py >& optimizing_cost.log
 

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "Exercise_3/Logistic_Regression_and_Newtons_Method.py", line 60, in <module>
+    x_original = np.genfromtxt('ex4x.dat')
+  File "/usr/local/anaconda/anaconda2/lib/python2.7/site-packages/numpy/lib/npyio.py", line 1360, in genfromtxt
+    fhd = iter(np.lib._datasource.open(fname, 'rbU'))
+  File "/usr/local/anaconda/anaconda2/lib/python2.7/site-packages/numpy/lib/_datasource.py", line 151, in open
+    return ds.open(path, mode)
+  File "/usr/local/anaconda/anaconda2/lib/python2.7/site-packages/numpy/lib/_datasource.py", line 501, in open
+    raise IOError("%s not found." % path)
+IOError: ex4x.dat not found.

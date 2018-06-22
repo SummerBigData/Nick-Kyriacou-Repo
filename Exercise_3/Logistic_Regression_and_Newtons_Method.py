@@ -1,9 +1,11 @@
 # Import packages
-
+import matplotlib
+matplotlib.use('agg')
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
+import matplotlib.image as mpimg
 import math
 
 #Defining all the functions we need
@@ -26,25 +28,16 @@ def grad(hypothesis,outputs,inputs,total):
 	x = np.dot(subtraction,inputs)
 	return(x/total)
 def cost(hypothesis,outputs,total):
-	print('shapes!')
 	first = -1.0*np.dot(outputs.T,np.log(hypothesis.T))	
-	print(first.shape)
-	print(outputs)
 	second = (1.0 - outputs)
-	print(second)
-	print(second.shape)
 	third = np.log(1.0 - hypothesis)
-	print(third.shape)
 	combination = first - np.dot(second.T,third.T)
-	print(combination.shape)
 	return(combination/float(total))
 	
  	
 
 
 def Hessian(hypothesis,inputs,total):
-	print('hypothesis')	
-	print(hypothesis.shape)
 	first  = np.zeros((1,80),float)
 	H = np.zeros((3,3),float)
 	for i in range(int(total)):
@@ -108,6 +101,7 @@ plt.xlabel('Exam 1 Score')
 plt.ylabel('Exam 2 Score')
 plt.title('Exam Scores')
 plt.legend(['Accepted','Rejected'])
+plt.savefig('First_Plot.png')
 plt.show()
 
 
@@ -132,7 +126,8 @@ plt.plot(J_theta)
 plt.xlabel('Iteration Number')
 plt.ylabel('Cost')
 plt.title('Optimal Iteration Number')
-plt.show()
+plt.savefig('second.png')
+#plt.show()
 
 #Now that we have found the optimal value of theta we can calculate and plot the decision boundary line
 #First we want to find the left-most and right-most x values for Exam 1 Score
@@ -155,7 +150,8 @@ plt.xlabel('Exam 1 Score')
 plt.ylabel('Exam 2 Score')
 plt.title('Exam Scores')
 plt.legend(["Accepted","Rejected","Decision Boundary"], prop = {'size':8})
-plt.show()
+plt.savefig('third.png')
+#plt.show()
 
 #Calculating probability that a student with test scores 20 and 80 will get into a college 
 student = [1,20,80]

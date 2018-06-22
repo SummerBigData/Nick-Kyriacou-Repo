@@ -1,0 +1,199 @@
+(7892,)
+(20, 192)
+(20, 1)
+(192, 20)
+(192, 1)
+(19200000,)
+(100000, 192)
+Initial cost Function
+65.54150612059517
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+('Iteration Number ', 20)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+('Iteration Number ', 40)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+('Iteration Number ', 60)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+('Iteration Number ', 80)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+in back_prop
+(20,)
+Optimal Cost function is
+6.330710403157046

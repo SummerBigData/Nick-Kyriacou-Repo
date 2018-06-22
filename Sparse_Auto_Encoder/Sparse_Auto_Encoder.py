@@ -264,7 +264,7 @@ for i in range(10000):
 theta_all = create_weights_and_bias()
 W_1,B_1, W_2, B_2 = seperate(theta_all)
 
-
+temp = data[0:100,]
 # CALCULATING IDEAL W MATRICES
 # Check the cost of the initial W matrices
 print 'Initial W JCost: ', sparse_cost_function(theta_all, data) 
@@ -276,10 +276,10 @@ print 'Initial W JCost: ', sparse_cost_function(theta_all, data)
 #Next let us optimize the cost function!!
 print('Lambda is ', l)
 print('now we are optimizing the cost function')
-optimize_time = scipy.optimize.minimize(fun = sparse_cost_function,x0 = theta_all,method = 'CG',tol = 1e-4,jac = back_prop,args = (data,))
+optimize_time = scipy.optimize.minimize(fun = sparse_cost_function,x0 = theta_all,method = 'CG',tol = 1e-4,jac = back_prop,args = (temp,))
 print('optimal cost function is')
 optimal_thetas = optimize_time.x
-optimal_thetas_cost = sparse_cost_function(optimal_thetas,data)
+optimal_thetas_cost = sparse_cost_function(optimal_thetas,temp)
 print(optimal_thetas_cost)
 
 
@@ -304,7 +304,7 @@ picAll = hspaceAll
 
 
 
-# We also want a picture of the activations for each node in the hidden layer. Borrowed from Suren for simplicity
+# We also want a picture of the input that maximally activates  each node in the hidden layer. Borrowed from Suren for simplicity
 W_1, B_1, W_2, B_2 = seperate(optimal_thetas)
 W1Len = np.sum(W_1**2)**(-0.5)
 X = W_1 / W1Len			
@@ -320,6 +320,10 @@ vblack = np.asarray([ [1 for i in range(2)] for j in range(8)])
 picAll = hblack
 for i in range(5):
 	pici = np.concatenate((vblack, picX[5*i+0], vblack, picX[5*i+1], vblack, picX[5*i+2], vblack, picX[5*i+3], vblack, picX[5*i+4], vblack), axis = 1)
+	print('shapes')
+	print(picAll.shape)
+	print(pici.shape)
+	print(hblack.shape)
 	picAll = np.vstack((picAll, pici, hblack))
 
 # Display the pictures

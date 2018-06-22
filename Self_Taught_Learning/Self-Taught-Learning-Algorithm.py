@@ -152,9 +152,10 @@ def sigmoid(W,B,inputs): #Add surens fix if there are overflow errors
 	z = np.matmul(W, inputs.T) + B #Should be a 25x10000 matrix
 	#print('in sigmoid')
 	#print(z.shape)
+	z = np.array(z,dtype = np.float128) #Helps prevent overflow errors
 	hypo = 1.0/(1.0 + np.exp(-1.0*z))
 	hypo = hypo.T
-	return(hypo)
+	return(np.array(hypo,dtype=np.float64)) #Help prevent overflow errors
 
 # Calculate the regularized Cost J(theta)
 def sparse_cost_function(theta_all, inputs):
@@ -209,7 +210,7 @@ def back_prop(theta_all, inputs):
 	Grad_B_1 = np.mean(delta_2, axis = 0) # DIMENSIONS OF (length_hidden,) 
 	Grad_B_2 = np.mean(delta_3, axis = 0) # DIMENSIONS OF (features,) 
 
-	#Now let's calculate the grad for our W_1 and W_2
+	#Now let's calculate the regularized grad for our W_1 and W_2
 	Grad_W_1 = (1.0/float(len(inputs)))*(Grad_W_1+ l*W_1)
 	Grad_W_2 = (1.0/float(len(inputs)))*(Grad_W_2 + l*W_2)
 
@@ -223,10 +224,10 @@ def back_prop(theta_all, inputs):
 
 training_sets = 60000 #60000 training samples
 features = 784 #784 features per sample (excluding x-int bias we add) because we have set of 28x28 pixellated images
-l = 0.1 #Lambda constant
+l = 10 #Lambda constant
 num_classes = 10 #There are 10 different possible classifications, This should and will change based on 
 length_hidden = 200
-Beta = 0.003
+Beta = 1.0
 P = 0.05
 test_set_size = 10000 #test set has 10000 entries
 epsilon = .12
@@ -254,18 +255,11 @@ print(training_labels_0_9.shape)
 theta_all = create_weights_and_bias()
 print('theta_all')
 print(theta_all.shape)
-###Something to think about later on. Whether or not I have to normalize my data...
-print(784*200)
-print(theta_all[0:784*200].shape)
-training_data = training_data_5_9[:29404,:]
 #First let's see what the initial cost is
 print('initial cost is')
 print(sparse_cost_function(theta_all,training_data_5_9))
 #Initial cost function turns out to be quite high (~200), now let's check the gradient
 
-#let's take a sample of the data
-sample = training_data_5_9[0:500,:]
-print(sample.shape)
 
 #print('checking_grad')
 #print(scipy.optimize.check_grad(sparse_cost_function,back_prop,theta_all,sample))
@@ -274,11 +268,11 @@ print(sample.shape)
 
 #Now let's move onto optimizing our weights
 print('Finding weights that optimize the sparse cost function')
-optimize_time = scipy.optimize.minimize(fun = sparse_cost_function,x0 = theta_all,method = 'CG',tol = 1e-4,jac = back_prop,args = (training_data_5_9,))
+optimize_time = scipy.optimize.minimize(fun = sparse_cost_function,x0 = theta_all,method = 'L-BFGS-B',tol = 1e-4,jac = back_prop,args = (training_data_5_9,))
 print('optimal cost function is')
 optimal_thetas = optimize_time.x
 optimal_thetas_cost = sparse_cost_function(optimal_thetas,training_data_5_9)
-print(optimal_thetas_cost)
+print(optimal_thetas_cost.shape)
 
 #Next let us write out these optimal thetas to an output file
 np.savetxt(output_name,optimal_thetas,delimiter = ',')
