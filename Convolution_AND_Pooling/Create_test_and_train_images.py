@@ -38,7 +38,7 @@ def generate_images():
 	num_train_images = 2000	
 	
 	#Let's take a look at some of the training and test images for fun!
-
+	''' #Commented out so code can still run when I submit through oakley
 	train_row_1 = np.concatenate((train_images[:,:,:,20],train_images[:,:,:,25],train_images[:,:,:,30],train_images[:,:,:,35],train_images[:,:,:,40]),axis = 1)
 	train_row_2 = np.concatenate((train_images[:,:,:,45],train_images[:,:,:,50],train_images[:,:,:,55],train_images[:,:,:,60],train_images[:,:,:,65]),axis = 1)
 	train_row_3 = np.concatenate((train_images[:,:,:,70],train_images[:,:,:,85],train_images[:,:,:,90],train_images[:,:,:,95],train_images[:,:,:,100]),axis = 1)
@@ -64,7 +64,7 @@ def generate_images():
 	print('next are 30 of the test images')
 	plt.imshow(test_panel,interpolation= 'none')
 	plt.show()
-	
+	'''
 
 
 	return(train_images,train_labels,test_images,test_labels)
