@@ -19,14 +19,14 @@ import gzip
 ######################### GLOBAL VARIABLE DEFINITION #########################
 
 gStep = 0
-eps = 0.12
-f1 = 784
-f2 = 200
-f3 = 10
-rho = 0.05
-beta = 0.8
-lamb = 10
-m = 98
+epsilon = 0.12
+features = 784
+hidden_layer_size = 200
+num_classes = 10
+P = 0.1
+B = 4
+l = 3e-5
+m = 60000
 #################### DATA PREP FUNCTION ###############################
 
 def read_ids(filename, n = None): #This function used to read MNIST dataset
@@ -88,138 +88,178 @@ def col(matrix, i): #Returns column of a certain index. Borrowed from Suren for 
 
 
 
-def randMat(x, y):
-	theta = np.random.rand(x,y) 	# Makes a (x) x (y) random matrix of [0,1]
-	return theta*2*eps - eps # Make it range [-eps, eps]
+
 
 ####################### FUNCTIONS #####################################
 
-def LinW(a, b):
-	return np.concatenate((np.ravel(a), np.ravel(b)))
-
-# Unlinearize AutoEncoder data: Take a vector, break it into two vectors, and roll it back up
-def unLinWAllAE(vec):	
-	W1 = np.asarray([vec[0			: f2*f1]])
-	W2 = np.asarray([vec[f2*f1 		: f2*f1*2]])
-	b1 = np.asarray([vec[f2*f1*2 	: f2*f1*2 + f2]])
-	b2 = np.asarray([vec[ f2*f1*2 + f2 : f2*f1*2 + f2 + f1]])
-	return W1.reshape(f2, f1) , W2.reshape(f1, f2), b1.reshape(f2, 1), b2.reshape(f1, 1)
-
-# Unlinearize SOFT data: Take a vector, break it into two vectors, and roll it back up
-def unLinW1(vec):	
-	W1 = np.asarray([vec[0		: f2*f1]])
-	b1 = np.asarray([vec[f2*f1	:]])
-	return W1.reshape(f2, f1) , b1.reshape(f2, 1)
-def unLinW2(vec):	
-	W2 = np.asarray([vec[0		: f3*f2]])
-	b2 = np.asarray([vec[f3*f2	:]])
-	return W2.reshape(f3, f2) , b2.reshape(f3, 1)
 
 
-# Calculate the Hypothesis (for layer l to l+1)
-def hypothesis(W, b, dat):
-	Max = np.amax(np.matmul(W, dat.T) + b)
-	numer = np.exp( np.matmul(W, dat.T) + b - Max )	# 200 x 15298 for W1, b1
+def hypothesis(W, B, x):
+	Max = np.amax(np.matmul(W, x.T) + B)
+	numer = np.exp( np.matmul(W, x.T) + B - Max )	#This method of finding the maximum value and subtracted all numbers exponeniated by this constant max value is helpful is dealing with overflow errors.
 	denom = np.asarray([np.sum(numer, axis=0)])
 	return (numer/denom).T
 
 
-# Calculate the Hypothesis (layer 3) using just layer 1.
-def ForwardProp(WA1, WA2, a1):
-	W1, b1 = unLinW1(WA1)
-	W2, b2 = unLinW2(WA2)
-	# Calculate a2 (g.m x 200)
-	a2 = hypothesis(W1, b1, a1)
-	# Calculate and return the output from a2 and W2 (g.m x 10)
-	a3 = hypothesis(W2, b2, a2)
-	return a2, a3
+# Calculate the Hypothesis (layer 3) using just layer 1 by feeding forward
+def Feed_Forward(theta_1, theta_2, inputs):
+
+	W_1 = np.reshape(theta_1[0:hidden_layer_size*features],(hidden_layer_size,features) )
+	B_1 = np.reshape(theta_1[hidden_layer_size*features:],(hidden_layer_size,1) )
+	W_2 = np.reshape(theta_2[0: num_classes*hidden_layer_size],(num_classes,hidden_layer_size) ) 
+	B_2 = np.reshape(theta_2[num_classes*hidden_layer_size:],(num_classes,1) ) 
+	# a_2 has dimensions of (input_size x hidden_layer_size)
+	a_2 = hypothesis(W_1, B_1, inputs)
+	# a_3 has dimensions of (input_size x num_classes)
+	a_3 = hypothesis(W_2, B_2, a_2)
+	return a_3, a_2
 
 # Calculate the regularized Cost J(theta)
-def RegJCost(WA2, WA1, a1, ymat):
+def RegJCost(theta_2, theta_1, inputs, ymat):
 	# Forward Propagate
-	a2, a3 = ForwardProp(WA1, WA2, a1)
+	a_3, a_2 = Feed_Forward(theta_1, theta_2, inputs)
 	# Seperate and reshape the Theta values
-	W2, b2 = unLinW2(WA2)
-	# Calculate J(W, b). ymat and a3 are the same shape: 15298 x 10
-	return (-1.0 / len(y))*np.sum( np.multiply(np.log(a3), ymat)  ) + lamb*0.5*np.sum(W2**2)
+	W_2 = np.reshape(theta_2[0: num_classes*hidden_layer_size],(num_classes,hidden_layer_size) ) 
+	B_2 = np.reshape(theta_2[num_classes*hidden_layer_size:],(num_classes,1) ) 
+	# returns cost function 
+	first = np.multiply(np.log(a_3), ymat)
+	second = np.sum(first)*(-1.0/float(len(inputs)))
+	third = l*0.5*np.sum(W_2**2)
+	cost = second+third
+	return (cost)
 
 
-def BackProp(WA2, WA1, a1, ymat):
-	# To keep track of how many times this code is called
+def back_prop(theta_2, theta_1, inputs, ymat):
+	# This counts the number of iterations and writes out successive thetas after every 200 iterations in case code is killed
 	global gStep
 	gStep += 1
 	if gStep % 50 == 0:
-		print 'Global Step: ', gStep, 'with JCost: ',  RegJCost(WA2, WA1, a1, ymat)
+		print 'Global Step: ', gStep, 'with JCost: ',  RegJCost(theta_2, theta_1, inputs, ymat)
 	if gStep % 200 == 0:
 		print 'Saving Global Step : ', gStep
-		saveW(WA2)
+		saveW(W_2)
 
 	# Forward Propagate
-	a2, a3 = ForwardProp(WA1, WA2, a1)	# a2 (g.m x 200), a3 (g.m x 10)
-	# Seperate and reshape the W and b values
-	W2, b2 = unLinW2(WA2)
+	a_3, a_2 = Feed_Forward(theta_1, theta_2, inputs)	# DIMENSIONS: a_2 = (input_size x hidden_layer (200) ) & a_3 (input_size x num_classes (10))
+	# Seperate and reshape the theta_2 values because these are what we want to optimize for the softmax classifier
+
 	
-	# Now, to get backprop to work, I had to remake the theta matrices we had previously. Sandwich b2 onto W2
-	WAll2 = np.hstack((b2, W2))
-	# Attach a column of 1's onto a2
-	left = np.array([[1] for i in range(len(col(ymat, 0))) ])
-	a2ones = np.hstack((left, a2))
-	# Calculate the derivative for both W2 and b2 at the same time
-	DeltaWAll2 = (-1.0 / len(y))*np.matmul((ymat - a3).T, a2ones) + lamb*WAll2		# (g.f3, g.f2)
-	# Seperate these back into W2 and b2 and linearize it
-	return LinW(DeltaWAll2[:,1:], DeltaWAll2[:,:1])
+	W_2 = np.reshape(theta_2[0: num_classes*hidden_layer_size],(num_classes,hidden_layer_size) ) 
+	B_2 = np.reshape(theta_2[num_classes*hidden_layer_size:],(num_classes,1) ) 
+	
+	# WE MUST recombine B_2 and W_2 into a theta_2 matrix again because we use this matrix to calculate gradients
+	theta_2_all = np.hstack((B_2, W_2))
+	# Attach a column of 1's onto a_2
+	ones = np.ones((len(inputs),1))
+	a_2_int = np.hstack((ones, a_2))
+	# Calculate the derivative for both W2 and b2 at the same time. Breaks up calculation so its eaasier to follow
+	output_error = (ymat - a_3)
+	second = np.matmul(output_error.T,a_2_int)*(-1.0 / len(inputs))
+	third = l*theta_2_all
+
+	Delta_W_2 = second + third	# (g.num_classes, g.hidden_layer_size)
+	# Take the gradients and seperate them individually into that for W_2 and B_2, roll them up into a list and feed it back to cost function. 
+	theta_list = np.concatenate(( np.ravel(Delta_W_2[:,1:]),np.ravel(Delta_W_2[:,:1]) ))
+	return theta_list
 
 
-def Norm(mat):
-	Min = np.amin(mat)
-	Max = np.amax(mat)
-	nMin = 0.00001
-	nMax = 0.99999
-	return ((mat - Min) / (Max - Min)) * (nMax - nMin) + nMin
-
-# Generate the y-matrix. This is called only once, so I use loops
+# Generate the y-matrix that we will use for calculations in our cost function. 
 def GenYMat(yvals):
 	yvals = np.ravel(yvals)
-	yArr = np.zeros((len(yvals), 10))
+	ymat = np.zeros((len(yvals), 10))
 	for i in range(len(yvals)):
 		for j in range(10):
 			if yvals[i] == j:
-				yArr[i][j] = 1
-	return yArr
+				ymat[i][j] = 1
+	return ymat
 
 ############################## MAIN CODE ################################
-dat, y = PrepData('09')
+dat, y = PrepData('04')
 
 
 dat = dat[:m, :]	# len(y)/2 For 04, 59 testing
 y = y[:m]
 
 
-file_name = 'output_folder/optimalweights_lambda_' + str(lamb) + '_Beta_' + str(beta) + '_Rho_' + str(rho) + '.out' #This is the name of the file where we pull our theta weights from
-
+file_name = 'output_folder/Best_Weights_Rho' + str(P) + 'Lambda' + str(l) + 'Beta' + str(B) + '.out' 
+#This is the name of the file where we pull our theta weights from
+#Now let's pull out our weights and resort them from one long list into individual arrays
 best_thetas = np.genfromtxt(file_name,dtype = 'float')
-print(best_thetas.shape)
 
-W1, W2AE, b1, b2AE = unLinWAllAE(best_thetas)	# W1: 200 x 784, b1: 200 x 1
-W2 = randMat(f3, f2)			# 10 x 200
-b2 = randMat(f3, 1)				# 10 x 1
-WA1 = LinW(W1, b1)	# 1D vector, probably length 157000
-WA2 = LinW(W2, b2)	# 1D vector, probably length 2010
 
+W_1 = np.reshape(best_thetas[0:features*hidden_layer_size],(hidden_layer_size,features)) #DIMENSIONS: (200,784) (HIDDEN_layer,features)
+B_1 = np.reshape(best_thetas[features*hidden_layer_size*2:features*hidden_layer_size*2 + hidden_layer_size],(hidden_layer_size,1)) #DIMENSIONS: (200,1) (HIDDEN_LAYER,1)
+
+W_2 = np.reshape(best_thetas[features*hidden_layer_size:features*hidden_layer_size*2],(features,hidden_layer_size)) #DIMENSIONS: ( 784,200 ) (features,HIDDEN_LAYER)
+B_2 = np.reshape(best_thetas[features*hidden_layer_size*2 + hidden_layer_size:features*hidden_layer_size*2 + hidden_layer_size + features],(features,1)) #DIMENSIONS: (784,1) (Features,1)
+
+
+#Next we need to randomly reinitialize our theta 2 weights
+W_2 = np.random.rand(num_classes,hidden_layer_size)
+W_2 = W_2*2*epsilon - epsilon
+B_2 = np.random.rand(num_classes,1)
+B_2 = B_2*2*epsilon - epsilon
+#repackaging these weights into the long theta lists we will send through our cost and backprop functions
+theta_1 = np.concatenate((np.ravel(W_1),np.ravel(B_1) ))
+theta_2 = np.concatenate((np.ravel(W_2),np.ravel(B_2) ))
 
 
 ymat = GenYMat(y)
 
-print 'Initial W JCost: ', RegJCost(WA2, WA1, dat, ymat) 
-# Check the gradient. Go up and uncomment the import check_grad to use. ~2.378977939526638e-05 for m=98 for randomized Ws and bs
-print scipy.optimize.check_grad(RegJCost, BackProp, WA2, WA1, dat, ymat)
-
+print 'Initial W JCost: ', RegJCost(theta_2, theta_1, dat, ymat) 
+# Checking the gradient, the gradient check was quite low (circa 1e-4 which indicated a sufficiently working backprop)
+'''
+print scipy.optimize.check_grad(RegJCost, back_prop, WA2, WA1, dat, ymat)
+'''
 # Calculate the best theta values for a given j and store them. Usually tol=10e-4. usually 'CG'
 
 
-res = minimize(fun=RegJCost, x0= WA2, method='L-BFGS-B', tol=1e-4, jac=BackProp, args=(WA1, dat, ymat) ) # options = {'disp':True}
-bestWA2 = res.x
+res = minimize(fun=RegJCost, x0= theta_2, method='L-BFGS-B', tol=1e-4, jac=back_prop, args=(theta_1, dat, ymat) ) # options = {'disp':True}
+optimal_theta_2 = res.x
 
-print 'Final W JCost', RegJCost(bestWA2, WA1, dat, ymat) 
+print 'Final W JCost', RegJCost(optimal_theta_2, theta_1, dat, ymat) 
 
+
+
+
+guesses_for_test_data,a_2_bias_test_data, = Feed_Forward(theta_1,optimal_theta_2,dat)
+
+
+
+test_set_size = len(dat) ## CHANGE THIS WHEN YOU WANT TO USE A DIFFERENT TEST SET
+test_labels = (y) ## CHANGE THIS WHEN YOU WANT TO USE A DIFFERENT TEST SET
+
+
+total_digit_count_test_set = np.zeros((10,1))
+#Let's look at each element of test_labels and figure out how many total we have of each digit
+for i in range(test_set_size):
+	digit = int(test_labels[i])
+	#print(digit)
+	#print(total_digit_count_test_set[digit])
+	total_digit_count_test_set[digit] = total_digit_count_test_set[digit] + 1
+
+
+#Repeat the same process as above and find the index of the highest values and then store them in a test_set_sizex1 array
+highest_value_neural_network = np.zeros((test_set_size,1))
+for k in range(test_set_size):
+	highest_value_neural_network[k,0] = ( np.argmax(guesses_for_test_data[k,:]) )
+#Now let's find the percentages we are able to identify a number correctly
+correctly_guessing_number_neural = np.zeros((10,1))
+
+
+
+
+for y in range(len(highest_value_neural_network)):
+	if (highest_value_neural_network[y] == test_labels[y]):
+		correctly_guessing_number_neural[int(test_labels[y])] = correctly_guessing_number_neural[int(test_labels[y])] + 1
+#Adding in some scaling factor to turn counts into percentages 
+scaling_down_neural = (correctly_guessing_number_neural)
+for s in range(10):
+	scaling_down_neural[s] = 100.0*(scaling_down_neural[s] / float(total_digit_count_test_set[s]) )
+print('Lambda = ',l)
+print('Beta = ', B)
+print('Rho = ', P )
+print("Percentages each number was guessed correctly using a neural network")
+print(scaling_down_neural.shape)
+print(scaling_down_neural)
 

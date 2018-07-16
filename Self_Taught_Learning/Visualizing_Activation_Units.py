@@ -141,10 +141,10 @@ def sigmoid(W,B,inputs): #Add surens fix if there are overflow errors
 training_sets = 60000
 features  = 784
 length_hidden = 200
-l = 10
-Beta = 1.0
-P = 0.05
-file_name = 'output_folder/optimalweights_lambda_' + str(l) + '_Beta_' + str(Beta) + '_Rho_' + str(P) + '.out' #This is the name of the file where we pull our theta weights from
+l = 3e-7
+Beta = 3
+P = 0.1
+file_name = 'output_folder/Best_Weights_Rho' + str(P) + 'Lambda' + str(l) + 'Beta' + str(Beta) + '.out' #This is the name of the file where we pull our theta weights from
 optimal_thetas = np.genfromtxt(file_name,dtype = 'float')
 print(optimal_thetas.shape)
 
