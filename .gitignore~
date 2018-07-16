@@ -1,3 +1,5 @@
 Linear_Decoders_With_Auto_Encoders/data/stlSampledPatches_ZCA_Whitened.out
 Convolution_AND_Pooling/data/stlSampledPatches_ZCA_Whitened.out
 *.py~
+Convolution_AND_Pooling/output_folder/Train_Set_CONVED_AND_POOLED_STEP_25.out
+Convolution_AND_Pooling/output_folder/Test_Set_CONVED_AND_POOLED_STEP_25.out
