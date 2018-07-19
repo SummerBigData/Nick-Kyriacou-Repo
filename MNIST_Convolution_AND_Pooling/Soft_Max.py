@@ -29,6 +29,26 @@ num_classes = 10
 
 ################### FUNCTION DEFINITIONS ##################
 
+
+def create_weights_bias():
+	
+	epsilon = 0.12
+	
+	W_1 = np.random.rand(length_hidden,features_pooled) #36x400 matrix
+	W_1 = W_1*2*epsilon - epsilon
+	W_2 = np.random.rand(num_classes,length_hidden) #10x36 matrix
+	W_2 = W_2*2*epsilon - epsilon
+
+	B_1 = np.random.rand(length_hidden,1) #36x1 matrix
+	B_1 = B_1*2*epsilon - epsilon
+	B_2 = np.random.rand(num_classes,1) #10x1 matrix
+	B_2 = B_2*2*epsilon - epsilon
+
+	theta_all = np.concatenate((np.ravel(W_1),np.ravel(W_2),np.ravel(B_1),np.ravel(B_2)))
+
+	return theta_all
+
+
 def y_as_matrix(y,training_sets): #This takes a training_setsx1 vector and makes it into a training_sets x num_classes matrix.
 	y = np.ravel(y)
 	y_array = np.zeros((training_sets,num_classes))
@@ -80,39 +100,8 @@ def hypo(value):
 	return (np.exp(value - constant)/ np.reshape(np.sum(np.exp(value - constant), axis = 1), (len(value), 1)))
 
 
-def reg_cost(theta_all, inputs, outputs):
-	#First we need to decompose our list of theta weights into their individual matrices because these are used for the regularization
-	W_1, W_2, B_1, B_2 = seperate(theta_all)
 
-	#Next we need to feed forward to propagate to the output layer so we can compute our cost function J(W,B)
-	a_3, a_2 = feed_forward(theta_all, inputs)
-
-	#Computes cost function (with regularization)
-	first = np.sum((-1.0 / float(len(inputs))) * np.multiply(outputs, np.log(a_3)))
-	second = (l / (2.0)) * (np.sum(np.multiply(W_1, W_1)))
-	third = (l / (2.0)) * (np.sum(np.multiply(W_2, W_2)))
-	total_cost = first + second + third
-
-	return total_cost
-
-
-def feed_forward(theta_all, inputs):
-	
-	#For this exercise because our softmax classifier has a hidden layer we must first use the logistic 	
-	#regression hypothesis function (sigmoid) to propagate from the input to the hidden layer.
-	#Then from the hidden layer we use the softmax hypothesis function(hypothesis) to go to the output layer. 
-	
-	#First let's decompose our theta_all
-	W_1,W_2,B_1,B_2 = seperate(theta_all)
-	
-	a_2 = sigmoid(np.dot(inputs, W_1.T) + np.tile(np.ravel(B_1), (len(inputs), 1)))    # (m, 36) matrix
-
-	a_3 = hypo(np.dot(a_2, W_2.T) + np.tile(np.ravel(B_2), (len(inputs), 1)))       # (m, 10) matrix
-
-	return a_3, a_2
-
-
-def backprop(theta_all, inputs, outputs):
+def back_prop(theta_all, inputs, outputs):
 	#This function calculates the individual derivatives for each theta term.
 	global global_step
 	
@@ -154,24 +143,37 @@ def backprop(theta_all, inputs, outputs):
 	Combined_Grad = np.concatenate((Grad_W_1, Grad_W_2, Grad_B_1, Grad_B_2))
 	return Combined_Grad
 
-# Set up our weights and bias terms
-def create_weights_bias():
+def reg_cost(theta_all, inputs, outputs):
+	#First we need to decompose our list of theta weights into their individual matrices because these are used for the regularization
+	W_1, W_2, B_1, B_2 = seperate(theta_all)
+
+	#Next we need to feed forward to propagate to the output layer so we can compute our cost function J(W,B)
+	a_3, a_2 = feed_forward(theta_all, inputs)
+
+	#Computes cost function (with regularization)
+	first = np.sum((-1.0 / float(len(inputs))) * np.multiply(outputs, np.log(a_3)))
+	second = (l / (2.0)) * (np.sum(np.multiply(W_1, W_1)))
+	third = (l / (2.0)) * (np.sum(np.multiply(W_2, W_2)))
+	total_cost = first + second + third
+
+	return total_cost
+
+
+def feed_forward(theta_all, inputs):
 	
-	epsilon = 0.12
+	#For this exercise because our softmax classifier has a hidden layer we must first use the logistic 	
+	#regression hypothesis function (sigmoid) to propagate from the input to the hidden layer.
+	#Then from the hidden layer we use the softmax hypothesis function(hypothesis) to go to the output layer. 
 	
-	W_1 = np.random.rand(length_hidden,features_pooled) #36x400 matrix
-	W_1 = W_1*2*epsilon - epsilon
-	W_2 = np.random.rand(num_classes,length_hidden) #10x36 matrix
-	W_2 = W_2*2*epsilon - epsilon
+	#First let's decompose our theta_all
+	W_1,W_2,B_1,B_2 = seperate(theta_all)
+	
+	a_2 = sigmoid(np.dot(inputs, W_1.T) + np.tile(np.ravel(B_1), (len(inputs), 1)))    # (m, 36) matrix
 
-	B_1 = np.random.rand(length_hidden,1) #36x1 matrix
-	B_1 = B_1*2*epsilon - epsilon
-	B_2 = np.random.rand(num_classes,1) #10x1 matrix
-	B_2 = B_2*2*epsilon - epsilon
+	a_3 = hypo(np.dot(a_2, W_2.T) + np.tile(np.ravel(B_2), (len(inputs), 1)))       # (m, 10) matrix
 
-	theta_all = np.concatenate((np.ravel(W_1),np.ravel(W_2),np.ravel(B_1),np.ravel(B_2)))
+	return a_3, a_2
 
-	return theta_all
 
 
 
@@ -225,13 +227,13 @@ print(reg_cost(theta_all, train, y_vals_mat))
 
 #Next we wanna check the gradient
 '''
-print scipy.optimize.check_grad(reg_cost, backprop, theta, train, y_vals_train)
+print scipy.optimize.check_grad(reg_cost, back_prop, theta, train, y_vals_train)
 '''
 #check_grad gives us a very low value which is indicative of a good working backprop function!
 
 
 # Minimize the cost value
-minimum = scipy.optimize.minimize(fun = reg_cost, x0 = theta_all, method = 'L-BFGS-B', tol = 1e-4, jac = backprop, args = (train, y_vals_mat)) 
+minimum = scipy.optimize.minimize(fun = reg_cost, x0 = theta_all, method = 'L-BFGS-B', tol = 1e-4, jac = back_prop, args = (train, y_vals_mat)) 
 best_thetas = minimum.x
 
 print ('Minimized cost function: ')
