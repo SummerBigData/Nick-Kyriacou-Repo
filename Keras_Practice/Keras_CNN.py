@@ -18,16 +18,16 @@ from keras.utils import np_utils # utiliies for encoding ground truth values
 input_shape = (28,28,1)
 conv_dim = 5 #convolving 5x5 feature regions
 batch_size = 128
-num_iterations = 15
+num_iterations = 10
 pooling_dim = 2 # using 2x2 pooling regions
 testing_size = 10000
-training_size = 60000
+training_size = 10000
 num_classes = 10
 conv_step = 1 #stepping increment for convolution
 pool_step = 2 #stepping increment for pooling
 output_channel_first_conv = 32
 output_channel_second_conv = 64
-input_nodes_second_layer = 750
+input_nodes_second_layer = 1000
 
 # Reads in MNIST dataset
 def read_idx(filename, n=None):
@@ -86,13 +86,13 @@ model = Sequential()
 #Keep adding layers based on how we want to structure our CNN
 
 model.add(Convolution2D(output_channel_first_conv,kernel_size = (conv_dim,conv_dim),strides=(conv_step,conv_step),activation = 'relu',input_shape = (28,28,1) ))
-model.add(MaxPooling2D(pool_size=(pooling_Dim,pooling_Dim),strides = (pool_step,pool_step)))
+model.add(MaxPooling2D(pool_size=(pooling_dim,pooling_dim),strides = (pool_step,pool_step)))
 
 #Now let's add another region of convolving and Pooling
 
 model.add(Convolution2D(output_channel_second_conv,kernel_size = (conv_dim,conv_dim),strides = (conv_step,conv_step),activation = 'relu')) 
 #Maybe change strides for this convolution if I don't get good results
-model.add(MaxPooling2D(pool_size = (pooling_Dim,pooling_Dim),strides = (pool_step,pool_step)))
+model.add(MaxPooling2D(pool_size = (pooling_dim,pooling_dim),strides = (pool_step,pool_step)))
 
 #Next after convolving we need to flatten the output to enter the fully connected layers
 model.add(Flatten())
@@ -109,6 +109,8 @@ model.add(Dense(10,activation = 'softmax'))
 #Next compile it
 
 model.compile(loss = 'categorical_crossentropy',optimizer = keras.optimizers.SGD(lr=0.01),metrics = ['accuracy'])
+print(model.summary() ) 
+
 
 model.fit(training_images,training_labels_mat,epochs=num_iterations,batch_size = batch_size,verbose = 1,validation_data = (testing_images,testing_labels_mat)) 
 #Next time let's practice adding in a callback feature
