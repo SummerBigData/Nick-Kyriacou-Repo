@@ -96,10 +96,29 @@ for column in train_trimmed:
 
 labels = ['LifeTime','dira','FlightDistance','FlightDistanceError','IP','IPSig','VertexChi2','pt','DOCAone','DOCAtwo','DOCAthree','IP_p0p2','IP_p1p2','isolationa','isolationb','isolationc','isolationd','isolatione','isolationf','iso','CDF1','CDF2','CDF3','ISO_SumBDT','p0_IsoBDT','p1_IsoBDT','p2_IsoBDT','p0_track_Chi2Dof','p1_track_Chi2Dof','p2_track_Chi2Dof','p0_IP','p1_IP','p2_IP','p0_IPSig','p1_IPSig','p2_IPSig','p0_pt','p1_pt','p2_pt','p0_p','p1_p','p2_p','p0_eta','p1_eta','p2_eta','SPDhits']
 
+
+print('lets take a quick look at mass (before pre-processing)')
+training = pd.read_csv('data/training.csv')
+mass = training['mass']
+plt.hist(mass,bins = 10000)
+plt.title('mass')
+plt.savefig('Picture_Folder/Before/before_pre_processing'+'mass'+'.png')
+#plt.show()
+
+print('now lets take a look-sie afterwards')
+training = pd.read_csv('data/training.csv')
+scaled_down_train = MinMaxScaler()
+training = scaled_down_train.fit_transform(training)
+print(training.shape)
+print(training[:,49].shape)
+mass = training[:,49]
+plt.hist(mass,bins = 10000)
+plt.title('mass')
+plt.savefig('Picture_Folder/After/after_pre_processing'+'mass'+'.png')
+#plt.show()
 #Let's comment this out because we only need to make these  plots once
-
 #Let's grab each column individually
-
+'''
 feature_array = np.zeros((len(training),46))
 for i in range(46):
 	feature_array[:,i] = train_trimmed[labels[i]]
@@ -111,7 +130,6 @@ for j in range(42,46):
 	print(j)
 	#plt.show()
 print('making plots after')
-'''
 #Now we pre-process our inputs
 scaled_down_train = MinMaxScaler()
 train_trimmed = scaled_down_train.fit_transform(train_trimmed)
