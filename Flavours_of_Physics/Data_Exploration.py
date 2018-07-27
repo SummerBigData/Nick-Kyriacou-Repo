@@ -103,7 +103,7 @@ mass = training['mass']
 plt.hist(mass,bins = 10000)
 plt.title('mass')
 plt.savefig('Picture_Folder/Before/before_pre_processing'+'mass'+'.png')
-#plt.show()
+plt.show()
 
 print('now lets take a look-sie afterwards')
 training = pd.read_csv('data/training.csv')
@@ -115,7 +115,7 @@ mass = training[:,49]
 plt.hist(mass,bins = 10000)
 plt.title('mass')
 plt.savefig('Picture_Folder/After/after_pre_processing'+'mass'+'.png')
-#plt.show()
+plt.show()
 #Let's comment this out because we only need to make these  plots once
 #Let's grab each column individually
 '''
