@@ -67,7 +67,7 @@ submission_file.to_csv('Submission_Folder/xgboost_only_submission_file.csv',inde
 
 #Let's make a plot to determine feature importance!
 
-sns.set(font_scale = 0.70)
+sns.set(font_scale = 0.50)
 xgb.plot_importance(xgb.train(parameters,Train_Data_Frame,tree_size))
 plt.show()
 '''
