@@ -39,6 +39,8 @@ def plot_seaborn_heatmap(dataframe,dim):
 	figure,axis = plt.subplots(figsize = (dim,dim))
 	corr = dataframe.corr()
 	sns.heatmap(corr,mask = np.zeros_like(corr,dtype = np.bool),cmap = sns.diverging_palette(220,10,as_cmap = True),square = True,ax = axis)
+	plt.xticks(range(len(corr.columns)),corr.columns,rotation = 90)
+	plt.yticks(range(len(corr.columns)),corr.columns,rotation = 0)
 	plt.show()
 	
 def Filter_Training_Data(x):
@@ -64,6 +66,11 @@ def Filter_Testing_Data(x):
 
 training = pd.read_csv('data/training.csv')
 test = pd.read_csv('data/test.csv')
+
+#Making a correlation plot of all our inputs
+plt_corr(training,51)
+
+plot_seaborn_heatmap(training,51)
 
 print(training.shape)
 print (test.shape)

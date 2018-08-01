@@ -1,0 +1,19 @@
+/var/spool/batch/torque/mom_priv/jobs/11231069.oak-batch.osc.edu.SC: line 24: [: missing `]'
+/users/PAS1383/osu10172/Nick-Kyriacou-Repo/Flavours_of_Physics
+discarding /usr/local/anaconda/anaconda2/bin from PATH
+prepending /users/PAS1383/osu10172/.conda/envs/local/bin to PATH
+
+-----------------------
+Resources requested:
+nodes=1:ppn=1
+mem=16gb
+-----------------------
+Resources used:
+cput=00:02:25
+walltime=00:03:00
+mem=1.181 GB
+vmem=2.348 GB
+-----------------------
+Resource units charged (estimate):
+0.020 RUs
+-----------------------

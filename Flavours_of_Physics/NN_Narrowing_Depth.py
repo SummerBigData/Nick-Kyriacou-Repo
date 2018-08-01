@@ -1,4 +1,4 @@
-#Purpose: This function will read in the data from csv files
+#Purpose: This function will read in the data from csv files and creates a simple NN with a narrowing depth structure
 #Created by: Nick Kyriacou
 #Created on: 7/23/2018
 
