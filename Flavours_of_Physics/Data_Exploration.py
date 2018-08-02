@@ -38,7 +38,10 @@ def plot_seaborn_heatmap(dataframe,dim):
 	
 	figure,axis = plt.subplots(figsize = (dim,dim))
 	corr = dataframe.corr()
-	sns.heatmap(corr,mask = np.zeros_like(corr,dtype = np.bool),cmap = sns.diverging_palette(220,10,as_cmap = True),square = True,ax = axis)
+	#Let's try creating a mask
+	mask = np.zeros_like(corr,dtype = np.bool)
+	mask[np.triu_indices_from(mask)] = True
+	sns.heatmap(corr,mask = mask,cmap = sns.diverging_palette(220,10,as_cmap = True),square = True,ax = axis)
 	plt.xticks(range(len(corr.columns)),corr.columns,rotation = 90)
 	plt.yticks(range(len(corr.columns)),corr.columns,rotation = 0)
 	plt.show()

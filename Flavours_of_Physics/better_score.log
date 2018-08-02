@@ -1,0 +1,16 @@
+/users/PAS1383/osu10172/.conda/envs/local/lib/python2.7/site-packages/pandas/core/computation/__init__.py:18: UserWarning: The installed version of numexpr 2.3.1 is not supported in pandas and will be not be used
+The minimum supported version is 2.4.6
+
+  ver=ver, min_ver=_MIN_NUMEXPR_VERSION), UserWarning)
+we are setting parameters for our XGB model
+we are now training the Extreme Gradient Boosting model
+XGB model successfully trained
+Now we want to train a Randon Forest Model (RF)
+RF model successfully trained
+Now we are going to make predictions on our test set
+predictions made for RF
+Now predicting for xgb
+predictions made for xgb
+weighting test probabilities (equally)
+creating submission file
+Successfully submitted

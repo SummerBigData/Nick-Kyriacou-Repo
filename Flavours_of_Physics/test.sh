@@ -18,5 +18,5 @@ module load python/2.7.8
 source activate local
 #
 # This is the command line that runs the python script
-python -u XGB_NN.py >& combined.log
+python -u RF_XGB.py >& better_score.log
 

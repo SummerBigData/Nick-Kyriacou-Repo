@@ -30,7 +30,7 @@ features_filtered = list(train.columns[1:-5])
 print('we are setting parameters for our XGB model')
 parameters = { "objective": "binary:logistic", "eta": 0.4, "max_depth" : 6, "min_child_weight": 3, "silent":1,"subsample":0.7,"colsample_bytree":0.7,"seed":1}
 
-tree_size = 250
+tree_size = 2000
 ''' This will describe what each parameter is doing for our model
 #Here we are using logistic regression for binary classification
 #Learning rate ('eta') of 0.4 
@@ -55,8 +55,9 @@ print('XGB model successfully trained')
 
 print('Now we want to train a Randon Forest Model (RF)')
 
-random_forest_model = RandomForestClassifier(n_estimators = 100, random_state = 1)
+random_forest_model = RandomForestClassifier(n_estimators = 300, random_state = 1,criterion = 'entropy')
 #n_estimator is the number of trees in our model
+#criterion is the function that determines how to evaluate a split in our model
 
 random_forest_model.fit(train[features_filtered],train["signal"])
 
@@ -73,9 +74,9 @@ print('predictions made for xgb')
 
 print('weighting test probabilities (equally)')
 
-testing_guesses = random_forest_predictions*0.20 + xtreme_boosting_predictions*0.80
+testing_guesses = random_forest_predictions*0.8 + xtreme_boosting_predictions*0.2
 
 print('creating submission file')
 submission_file = pd.DataFrame({'id': test['id'], 'prediction': testing_guesses})
-submission_file.to_csv('Submission_Folder/RF_XGB_submission_file.csv',index = False)
+submission_file.to_csv('Submission_Folder/RF_XGB_submission_file_1.csv',index = False)
 print('Successfully submitted')
