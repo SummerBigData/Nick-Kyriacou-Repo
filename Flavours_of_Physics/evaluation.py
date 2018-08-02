@@ -1,3 +1,5 @@
+#This function will calculate the weighted ROC score, mass agreement (CVM) test and simulated versus real (KS) test to determine my score before I submit.
+
 import numpy
 from sklearn.metrics import roc_curve, auc
 
