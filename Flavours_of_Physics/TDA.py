@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 """
     Author: Triskelion, HJ van Veen, info@mlwave.com
-    
+    Code incorporated from the author. 
+    Currently attempting to get it to run correctly but unsuccessfully still
+
+    Expected plot found here: https://www.kaggle.com/triskelion/testing-python-3
+ 
     Description
     
     1) MinMaxScaler on the train set

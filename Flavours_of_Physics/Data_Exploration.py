@@ -1,4 +1,4 @@
-
+#This Script will explore some of my data and create a few correlation matrix plots to see how certain subsets of my data behave.  
 #Importing Packages
 import matplotlib
 #matplotlib.use('agg')

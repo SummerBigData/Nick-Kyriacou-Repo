@@ -1,4 +1,4 @@
-#Purpose: This function will read in the data from csv files
+#Purpose: This function is the first Neural Network that I made. It didn't perform so well because I created a hidden layer node that was impossibly large and didn't pre-scale the inputs as I should have.
 #Created by: Nick Kyriacou
 #Created on: 7/23/2018
 

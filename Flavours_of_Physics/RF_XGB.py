@@ -1,4 +1,4 @@
-#Purpose: The purpose of this script is to implement a weighted average of XGB (xtreme gradient boosting) and a RF classifier to help pass the CVM test. 
+#Purpose: The purpose of this script is to implement a weighted average of XGB (xtreme gradient boosting) and a RF classifier to help pass the CVM test.So far this is my best model to date, the vanilla version achieves a ROC score of 0.9822
 #Created By: Nicholas Kyriacou
 #Created on: 7/30/2018
 
@@ -30,7 +30,7 @@ features_filtered = list(train.columns[1:-5])
 print('we are setting parameters for our XGB model')
 parameters = { "objective": "binary:logistic", "eta": 0.4, "max_depth" : 6, "min_child_weight": 3, "silent":1,"subsample":0.7,"colsample_bytree":0.7,"seed":1}
 
-tree_size = 2000
+tree_size = 350
 ''' This will describe what each parameter is doing for our model
 #Here we are using logistic regression for binary classification
 #Learning rate ('eta') of 0.4 

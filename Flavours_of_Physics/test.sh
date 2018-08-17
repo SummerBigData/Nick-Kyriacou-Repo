@@ -1,4 +1,4 @@
-#PBS -N run_ex3
+#PBS -N Nothing_added
 #PBS -l walltime=600:00
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=16GB
@@ -18,5 +18,5 @@ module load python/2.7.8
 source activate local
 #
 # This is the command line that runs the python script
-python -u RF_XGB.py >& better_score.log
+python -u Strong_Weak_XGB_NN.py >& Madness.log
 

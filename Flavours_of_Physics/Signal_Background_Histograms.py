@@ -1,4 +1,4 @@
-#This Script will calculate some of the highest correlations between the features and signal and production. It will also create histograms to manually examine some of the distributions of our various variables.
+#This Script will calculate some of the highest correlations between the features and signal and production. It will also create histograms to manually examine some of the distributions of our various variables. This is incredibly useful for visualization the seperation between my signal and background (simulated and real data)
 #Created By: Nicholas Kyriacou
 #Created on: 8/2/2018
 
@@ -77,9 +77,16 @@ plt.xlabel('Impact Parameter')
 plt.ylabel('Counts (Fraction of 1)')
 plt.legend()
 plt.show()
+'''
+plt.hist(signal.min_ANNmuon, bins = 150,label = 'Signal',alpha = 0.6,normed = True)
+plt.hist(background.min_ANNmuon,bins = 150,label = 'Background',alpha = 0.6, normed = True)
+plt.xlabel('Minimum ANN of muon particles')
+plt.ylabel('Counts (Fraction of 1)')
+plt.legend()
+plt.show()
 
 
-plt.hist(signal.IPSig, bins = 150,label = 'Signal',alpha = 0.6,normed = True)
+plt.hist(signal.IPSig, bins = 20,label = 'Signal',alpha = 0.6,normed = True)
 plt.hist(background.IPSig,bins = 150,label = 'Background',alpha = 0.6, normed = True)
 plt.xlabel('Impact Parameter Significance')
 plt.ylabel('Counts (Fraction of 1)')
@@ -87,7 +94,7 @@ plt.legend()
 plt.show()
 
 
-plt.hist(signal.ISO_SumBDT, bins = 150,label = 'Signal',alpha = 0.6,normed = True)
+plt.hist(signal.ISO_SumBDT, bins = 75,label = 'Signal',alpha = 0.6,normed = True)
 plt.hist(background.ISO_SumBDT,bins = 150,label = 'Background',alpha = 0.6, normed = True)
 plt.xlabel('ISO_SumDBT (Track Isolation Variable)')
 plt.ylabel('Counts (Fraction of 1)')
@@ -95,7 +102,7 @@ plt.legend()
 plt.show()
 
 
-plt.hist(signal.p0_track_Chi2Dof, bins = 150,label = 'Signal',alpha = 0.6,normed = True)
+plt.hist(signal.p0_track_Chi2Dof, bins = 20,label = 'Signal',alpha = 0.6,normed = True)
 plt.hist(background.p0_track_Chi2Dof,bins = 150,label = 'Background',alpha = 0.6, normed = True)
 plt.xlabel(r'p0 track $\chi^2$  Degrees of Freedom')
 plt.ylabel('Counts (Fraction of 1)')
@@ -103,14 +110,22 @@ plt.legend()
 plt.show()
 
 
-plt.hist(signal.isolatione, bins = 150,label = 'Signal',alpha = 0.6,normed = True)
-plt.hist(background.isolatione,bins = 150,label = 'Background',alpha = 0.6, normed = True)
+plt.hist(signal.isolatione, bins = 20,range = (0.0,6.0),label = 'Signal',alpha = 0.6,normed = True)
+plt.hist(background.isolatione,bins = 20,range = (0.0,6.0),label = 'Background',alpha = 0.6, normed = True)
 plt.xlabel('Isolation_e (Track Isolation Variable')
 plt.ylabel('Counts (Fraction of 1)')
 plt.legend()
 plt.show()
 
-'''
+plt.hist(signal.iso, bins = 20,range = (0,20), label = 'Signal',alpha = 0.6,normed = True)
+plt.hist(background.iso,bins = 20,range = (0,20),label = 'Background',alpha = 0.6, normed = True)
+plt.xlabel('Iso (Track Isolation Variable')
+plt.ylabel('Counts (Fraction of 1)')
+plt.legend()
+plt.show()
+
+
+
 
 
 

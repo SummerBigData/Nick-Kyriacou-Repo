@@ -1,4 +1,4 @@
-#Purpose: This function will read in the data from csv files and creates a simple NN with a narrowing depth structure
+#Purpose: This function will read in the data from csv files and creates a simple NN with a narrowing depth structure. It performs poorly (only 0.6236 validation accuracy).
 #Created by: Nick Kyriacou
 #Created on: 7/23/2018
 
@@ -91,7 +91,7 @@ model = Sequential()
 
 #Let's start with a simple neural network with one hidden layer
 
-model.add(Dense( len(train_trimmed), input_dim = features))
+model.add(Dense( 500, input_dim = features))
 prelu_first = keras.layers.advanced_activations.PReLU(init = 'zero',weights= None)
 model.add(prelu_first)
 model.add(Dropout(0.4))

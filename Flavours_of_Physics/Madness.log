@@ -1,0 +1,30 @@
+Using TensorFlow backend.
+/users/PAS1383/osu10172/.conda/envs/local/lib/python2.7/site-packages/pandas/core/computation/__init__.py:18: UserWarning: The installed version of numexpr 2.3.1 is not supported in pandas and will be not be used
+The minimum supported version is 2.4.6
+
+  ver=ver, min_ver=_MIN_NUMEXPR_VERSION), UserWarning)
+/users/PAS1383/osu10172/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Train and Test data successfully read in
+Filtered out events with min_ANNmuon > 0.4
+Successfully added features
+Inputs and Test data Pre-Processed
+/users/PAS1383/osu10172/.conda/envs/local/lib/python2.7/site-packages/keras/models.py:851: UserWarning: The `nb_epoch` argument in `fit` has been renamed `epochs`.
+  warnings.warn('The `nb_epoch` argument in `fit` '
+Epoch 1/150
+2018-08-17 11:30:16.311258: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-17 11:30:16.311290: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+4s - loss: 0.2937
+Epoch 2/150
+3s - loss: 0.2666
+Epoch 3/150
+3s - loss: 0.2622
+Epoch 4/150
+3s - loss: 0.2623
+Epoch 5/150
+3s - loss: 0.2627
+Epoch 6/150
+3s - loss: 0.2629
+Epoch 7/150
+3s - loss: 0.2671
+Epoch 8/150

@@ -1,4 +1,4 @@
-#Purpose: The purpose of this script is to implement XGB (xtreme gradient boosting) as suggested on discussion forums
+#Purpose: The purpose of this script is to implement XGB (xtreme gradient boosting) as suggested on discussion forums. This is just a baseline XGBoost model.
 #Created By: Nicholas Kyriacou
 #Created on: 7/26/2018
 
